@@ -10,10 +10,11 @@ export default http => {
   )
 
   http.interceptors.response.use(
+    response => {
+      return response.data
+    },
     error => {
-      if (!error['response']) {
-        return Promise.reject(error)
-      }
+      return Promise.reject(error)
     }
   )
 }
