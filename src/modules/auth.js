@@ -1,7 +1,7 @@
 import http from '@/utils/http'
 
 const state = {
-  authenticated: false,
+  token: null,
   user: {}
 }
 
@@ -17,38 +17,50 @@ const actions = {
     }).then(response => {
       const accessToken = JSON.stringify({data: response.access_token, expire_in: Date.now() + 1000*60*60*24*10})
       window.localStorage.setItem('access_token', accessToken)
-      http.defaults.headers.common.Authorization = `Bearer ${response.access_token}`
-      commit('setAuthenticated', true)
+      commit('setToken', response.access_token)
     }).then(() => dispatch('loadUser')).catch(e => {
       console.log(e)
     })
   },
 
   logout ({ commit }) {
-    commit('setAuthenticated', false)
-    commit('setUser', {})
+    commit('logout')
   },
 
-  loadUser ({ commit }) {
-    http.get('/user').then(user => commit('setUser', user)).catch(e => {
-      console.log(e)
-    })
+  async loadUser ({ commit }) {
+    try {
+      const user = await http.get('/user')
+
+      commit('setUser', user)
+    } catch (e) {
+      commit('loadUserFailure')
+    }
   }
 
 }
 
 const getters = {
-  authenticated: ({ authenticated }) => authenticated,
-  currentUser: ({ user }) => user
+  authenticated: ({ token }) => token ? true : false,
+  currentUserId: ({ user }) => user.id ? user.id : null
 }
 
 const mutations = {
-  setAuthenticated (state, value) {
-    state.authenticated = value
+  setToken (state, value) {
+    state.token = value
   },
 
   setUser (state, user) {
     state.user = user
+  },
+
+  logout (state) {
+    state.token = null,
+    state.user = {}
+  },
+
+  loadUserFailure (state) {
+    state.token = null
+    state.user = {}
   }
 }
 

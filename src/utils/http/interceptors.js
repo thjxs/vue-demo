@@ -1,6 +1,12 @@
+import store from '@/store'
+
 export default http => {
   http.interceptors.request.use(
     config => {
+      const token = store.state.auth.token
+      if (token) {
+        config.headers.common.authorization = `Bearer ${token}`
+      }
       config.withCredentials = true
       return config
     },

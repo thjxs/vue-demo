@@ -3,7 +3,7 @@ import interceptors from './interceptors'
 
 const http = axios.create({
   baseURL: process.env.VUE_APP_API_URL,
-  timeout: 10000
+  timeout: 2500
 })
 
 interceptors(http)
