@@ -25,6 +25,28 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: () => import('./views/Login.vue')
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: () => import('./views/Register.vue')
+    },
+    {
+      path: '/topics/:id',
+      name: 'topics',
+      component: () => import('./views/TopicShow.vue')
+    },
+    {
+      path: '/users/:id',
+      name: 'users',
+      children: [
+        {
+          path: 'posts'
+        },
+        {
+          path: 'replies'
+        }
+      ]
     }
   ]
 })
