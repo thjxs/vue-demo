@@ -18,8 +18,8 @@ const actions = {
       const accessToken = JSON.stringify({data: response.access_token, expire_in: Date.now() + 1000*60*60*24*10})
       window.localStorage.setItem('access_token', accessToken)
       commit('setToken', response.access_token)
-    }).then(() => dispatch('loadUser')).catch(e => {
-      console.log(e)
+    }).then(() => dispatch('loadUser')).catch(() => {
+      // console.log(e)
     })
   },
 

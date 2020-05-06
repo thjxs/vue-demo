@@ -39,7 +39,7 @@ export default {
       try {
         this.activedUsers = await this.$http.get('/actived/users')
       } catch (e) {
-        console.log(e)
+        //
       }
     }
   }

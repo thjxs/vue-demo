@@ -50,7 +50,7 @@ export default {
           }
 
           this.$http.post('register', payload).then(response => {
-            console.log(response)
+            //
           })
           // this.$router.push({ name: 'home' })
         }
